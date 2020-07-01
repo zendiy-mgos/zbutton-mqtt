@@ -1,0 +1,21 @@
+author: ZenDIY
+type: lib
+description: Mongoose OS library for enabling MQTT over ZenButtons
+version: 1.0
+
+sources:
+  - src
+includes:
+  - include
+filesystem:
+  - fs
+config_schema:
+libs:
+  - origin: https://github.com/zendiy-mgos/zthing-mqtt
+  - origin: https://github.com/zendiy-mgos/zbutton
+
+tags:
+  - c
+  - docs:misc:ZenButton MQTT
+
+manifest_version: 2017-09-29
