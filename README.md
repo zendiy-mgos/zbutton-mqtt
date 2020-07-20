@@ -79,14 +79,21 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |Parameter|Type||
 |--|--|--|
 |eventTopic|string|The MQTT topic for publishing button event payload.|
-|cfg|object|Optional. MQTT configuration. If missing, default configuration values are used.|
+|cfg|object|Optional. MQTT configuration. If missing, default configuration values are used. For more details see *'MQTT configuration properties'* below.|
 
 **MQTT configuration properties**
+```js
+{
+  eventClick: 'CLICK',
+  eventDblclick: 'DBLCLICK',
+  eventPress: 'PRRESS'
+}
+```
 |Property|Type||
 |--|--|--|
-|*cfg*.eventClick|string|Optional. The event message payload to publish when the button is clicked. Default value 'CLICK'.|
-|*cfg*.eventDblclick|string|Optional. The event message payload to publish when the button is double-clicked. Default value 'DBLCLICK'.|
-|*cfg*.eventPress|string|Optional. The event message payload to publish when the button is pressed. Default value 'PRRESS'.|
+|eventClick|string|Optional. The event message payload to publish when the button is clicked. Default value 'CLICK'.|
+|eventDblclick|string|Optional. The event message payload to publish when the button is double-clicked. Default value 'DBLCLICK'.|
+|eventPress|string|Optional. The event message payload to publish when the button is pressed. Default value 'PRRESS'.|
 
 **Environment variables for MQTT topics** - The `eventTopic` parameter can contain one or more of following environment variables.
 
