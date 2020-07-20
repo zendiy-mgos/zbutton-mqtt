@@ -74,7 +74,7 @@ Detaches the button from MQTT services that were previously attached using `mgos
 ```js
 let success = btn.MQTT.attach(eventTopic, cfg);
 ```
-Attaches the button to MQTT services. Returns `true` on success, `false` otherwise. The button will publish its events on `stateTopic`.
+Attaches the button to MQTT services. Returns `true` on success, `false` otherwise. The button will publish its events on `eventTopic`.
 
 |Parameter|Type||
 |--|--|--|
