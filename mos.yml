@@ -1,6 +1,6 @@
 author: ZenDIY
 type: lib
-description: Mongoose OS library for enabling MQTT over ZenButtons
+description: Mongoose OS library for publishing ZenButtons events as MQTT messages
 version: 1.0
 
 sources:
