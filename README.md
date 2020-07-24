@@ -1,6 +1,6 @@
 # ZenButton MQTT
 ## Overview
-A Mongoose-OS library for publishing ZenButtons events as MQTT messages.
+Mongoose-OS library for publishing ZenButtons events as MQTT messages.
 ## GET STARTED
 Build up your own device in few minutes just starting from one of the following samples.
 
@@ -121,4 +121,4 @@ Take a look to some other samples or libraries.
 
 |Reference|Type||
 |--|--|--|
-|[zbutton-gpio](https://github.com/zendiy-mgos/zbutton-gpio)|Library|A Mongoose-OS library for attaching ZenButtons to gpio-based pushbuttons.|
+|[zbutton-gpio](https://github.com/zendiy-mgos/zbutton-gpio)|Library|Mongoose-OS library for attaching ZenButtons to gpio-based pushbuttons.|
