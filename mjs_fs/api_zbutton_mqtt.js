@@ -3,7 +3,7 @@ load('api_zbutton.js');
 ZenButton.MQTT = {
   _att: ffi('bool mgos_zbutton_mqtt_attach(void *, char *, void *)'),
   _det: ffi('bool mgos_zbutton_mqtt_detach(void *)'),
-  _cfgc: ffi('void *mjs_zbutton_mqtt_cfg_create(char *, char *, char *)'),
+  _cfgc: ffi('void *mjs_zbutton_mqtt_cfg_create(char *, char *, char *, char *)'),
   _cfgf: ffi('void mjs_zbutton_mqtt_cfg_free(void *)'),
 
   _proto: {
@@ -30,7 +30,8 @@ ZenButton.MQTT = {
         cfgo = ZenButton.MQTT._cfgc(
           cfg.eventClick || null,
           cfg.eventDblclick || null,
-          cfg.eventPress || null
+          cfg.eventPress || null,
+          cfg.eventPressEnd || null
         );
       }
       let result = ZenButton.MQTT._att(this._getHandle(), eventTopic, cfgo);

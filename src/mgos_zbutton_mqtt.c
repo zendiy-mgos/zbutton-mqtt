@@ -60,37 +60,40 @@ void mg_zbutton_mqtt_on_event_cb(int ev, void *ev_data, void *ud) {
   struct mg_zbutton_mqtt_entry *entry = (struct mg_zbutton_mqtt_entry *)ud;
   if (!handle || !entry) return;
 
-  const char* msg = NULL;
+  const char* event = NULL;
   if (ev == MGOS_EV_ZBUTTON_ON_CLICK) {
-    msg = entry->cfg.event_click;
+    event = entry->cfg.event_click;
   } else if (ev == MGOS_EV_ZBUTTON_ON_DBLCLICK) {
-    msg = entry->cfg.event_dblclick;
+    event = entry->cfg.event_dblclick;
   } else if (ev == MGOS_EV_ZBUTTON_ON_PRESS) {
-    msg = entry->cfg.event_press;
+    event = entry->cfg.event_press;
+  } else if (ev == MGOS_EV_ZBUTTON_ON_PRESS_END) {
+    event = entry->cfg.event_press_end;
   }
 
-  if (msg) {
-    mgos_zthing_mqtt_pub(entry->event_topic, msg, false); 
+  if (event) {
+    mgos_zthing_mqtt_pubf(entry->event_topic, false,
+      "{event:%s; isPressed:%B; pressDuration:%d; pressCounter:%d}",
+      event,
+      mgos_zbutton_is_pressed(handle),
+      mgos_zbutton_press_duration_get(handle),
+      mgos_zbutton_press_counter_get(handle));
   }
 }
 
 bool mg_zbutton_mqtt_entry_reset(struct mg_zbutton_mqtt_entry *entry) {
-  if (entry == NULL ) return false;
-  mgos_event_remove_handler(MGOS_EV_ZBUTTON_ON_CLICK, mg_zbutton_mqtt_on_event_cb, entry);
-  mgos_event_remove_handler(MGOS_EV_ZBUTTON_ON_DBLCLICK, mg_zbutton_mqtt_on_event_cb, entry);
-  mgos_event_remove_handler(MGOS_EV_ZBUTTON_ON_PRESS, mg_zbutton_mqtt_on_event_cb, entry);
+  if (!entry) return false;
+  mgos_event_remove_group_handler(MGOS_EV_ZBUTTON_ON_ANY, mg_zbutton_mqtt_on_event_cb, entry);
   return true;
 }
 
 bool mg_zbutton_mqtt_entry_set(struct mg_zbutton_mqtt_entry *entry) {
-  if (entry == NULL) return false;
-  if (mgos_event_add_handler(MGOS_EV_ZBUTTON_ON_CLICK, mg_zbutton_mqtt_on_event_cb, entry) &&
-      mgos_event_add_handler(MGOS_EV_ZBUTTON_ON_DBLCLICK, mg_zbutton_mqtt_on_event_cb, entry) &&
-      mgos_event_add_handler(MGOS_EV_ZBUTTON_ON_PRESS, mg_zbutton_mqtt_on_event_cb, entry)) {
+  if (!entry) return false;
+  if (mgos_event_add_group_handler(MGOS_EV_ZBUTTON_ON_ANY, mg_zbutton_mqtt_on_event_cb, entry)) {
     return true;
   }
   mg_zbutton_mqtt_entry_reset(entry);
-  return true;
+  return false;
 }
 
 bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
@@ -108,6 +111,8 @@ bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
       (cfg->event_dblclick != NULL ? cfg->event_dblclick : MGOS_ZBUTTON_MQTT_EV_DBLCLICK)));
     e->cfg.event_press = strdup((cfg == NULL ? MGOS_ZBUTTON_MQTT_EV_PRESS :
       (cfg->event_press != NULL ? cfg->event_press : MGOS_ZBUTTON_MQTT_EV_PRESS)));
+    e->cfg.event_press_end = strdup((cfg == NULL ? MGOS_ZBUTTON_MQTT_EV_PRESS_END :
+      (cfg->event_press_end != NULL ? cfg->event_press_end : MGOS_ZBUTTON_MQTT_EV_PRESS_END)));
 
     char *tmp_buf = NULL;
     // Normalize and clone event_topic 
@@ -146,12 +151,14 @@ bool mgos_zbutton_mqtt_detach(struct mgos_zbutton *handle) {
 
 struct mgos_zbutton_mqtt_cfg *mjs_zbutton_mqtt_cfg_create(const char* event_click,
                                                           const char* event_dblclick,
-                                                          const char* event_press) {
+                                                          const char* event_press,
+                                                          const char* event_press_end) {
   struct mgos_zbutton_mqtt_cfg *cfg = calloc(1,
     sizeof(struct mgos_zbutton_mqtt_cfg));
   cfg->event_click = strdup(event_click != NULL ? event_click : MGOS_ZBUTTON_MQTT_EV_CLICK);
   cfg->event_dblclick = strdup(event_dblclick != NULL ? event_dblclick : MGOS_ZBUTTON_MQTT_EV_DBLCLICK);
   cfg->event_press = strdup(event_press != NULL ? event_press : MGOS_ZBUTTON_MQTT_EV_PRESS);
+  cfg->event_press_end = strdup(event_press_end != NULL ? event_press_end : MGOS_ZBUTTON_MQTT_EV_PRESS_END);
 
   return cfg;
 }
