@@ -1,14 +1,21 @@
 # ZenButton MQTT
 ## Overview
-Mongoose-OS library for publishing ZenButtons events as MQTT messages. A ZenButton instance publishes following MQTT messages on its topic according click or press events.
+Mongoose-OS library for publishing [ZenButton](https://github.com/zendiy-mgos/zbutton) events as MQTT messages. A [ZenButton](https://github.com/zendiy-mgos/zbutton) instance publishes following MQTT messages on its topic according click or press events.
 
 **MQTT MESSAGES**
-|Event|Message payload|
+|Event|Message payload example|
 |--|--|
-|Single click|`{"event":"CLICK"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
-|Double click|`{"event":"DBLCLICK"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
-|Long press|`{"event":"PRESS"; "isPressed":true; "pressDuration":1010; "pressCounter":1}`|
-|Released (after long press)|`{"event":"PRESS_END"; "isPressed":false; "pressDuration":5550; "pressCounter":5}`|
+|Single Click|`{"event":"SC"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
+|Double Click|`{"event":"DC"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
+|Long Press|`{"event":"LP"; "isPressed":true; "pressDuration":1010; "pressCounter":1}`|
+|Long Press End|`{"event":"LPE"; "isPressed":false; "pressDuration":5550; "pressCounter":5}`|
+**MQTT MESSAGE PAYLOAD PROPERTIES**
+|Property|Type||
+|--|--|--|
+|event|String|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"`.|
+|isPressed|Boolean|It is `true` if the button is pressed (long-press). Otherwise it is `flase`.|
+|pressDuration|Integer|How long, in milliseconds, the button was pressed (long press).|
+|pressCounter|Integer|How many times the *long Press* event was repeated (see `press_repeat_ticks` ZenButton's [configuration parameter](https://github.com/zendiy-mgos/zbutton#mgos_zbutton_cfg)).|
 ## GET STARTED
 Build up your own device in few minutes just starting from one of the following samples.
 ## Usage
@@ -35,10 +42,10 @@ MQTT configuration settings for `mgos_zbutton_mqtt_attach()`.
 
 |Field||
 |--|--|
-|event_click|The event message payload to publish when the button is clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_CLICK` to use the default value `"CLICK"`|
-|event_dblclick|The event message payload to publish when the button is double-clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_DBLCLICK` to use the default value `"DBLCLICK"`|
-|event_press|The event message payload to publish when the button is pressed. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS` to use the default value `"PRESS"`|
-|event_press_end|The event message payload to publish when the button is released after a long press. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS_END` to use the default value `"PRESS_END"`|
+|event_click|The `event` property value of the message payload to publish when the button is clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_CLICK` to use the default value `"SC"`.|
+|event_dblclick|The `event` property value of the message payload to publish when the button is double-clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_DBLCLICK` to use the default value `"DC"`.|
+|event_press|The `event` property value of the message payload to publish when the button is pressed. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS` to use the default value `"LP"`.|
+|event_press_end|The `event` property value of the message payload to publish when the button is released after a long press. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS_END` to use the default value `"LPE"`.|
 ### mgos_zbutton_mqtt_attach()
 ```c
 bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
@@ -89,18 +96,18 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 **MQTT configuration properties**
 ```js
 {
-  eventClick: 'CLICK',
-  eventDblclick: 'DBLCLICK',
-  eventPress: 'PRESS',
-  eventPressEnd: 'PRESS_END'
+  eventClick    // default value 'SC',
+  eventDblclick // default value 'DC',
+  eventPress    // default value 'LP',
+  eventPressEnd // default value 'LPE'
 }
 ```
 |Property|Type||
 |--|--|--|
-|eventClick|string|Optional. The event message payload to publish when the button is clicked. Default value `'CLICK'`.|
-|eventDblclick|string|Optional. The event message payload to publish when the button is double-clicked. Default value `'DBLCLICK'`.|
-|eventPress|string|Optional. The event message payload to publish when the button is pressed. Default value `'PRRESS'`.|
-|eventPressEnd|string|Optional. The event message payload to publish when the button is released after a long press. Default value `'PRESS_END'`|
+|eventClick|string|Optional. The `event` property value of the message payload to publish when the button is clicked. Default value `'SC'`.|
+|eventDblclick|string|Optional. The `event` property value of the message payload to publish when the button is double-clicked. Default value `'DC'`.|
+|eventPress|string|Optional. The `event` property value of the message payload to publish when the button is pressed. Default value `'PRRESS'`.|
+|eventPressEnd|string|Optional. The `event` property value of the message payload to publish when the button is released after a long press. Default value `'LPE'`.|
 
 **Environment variables for MQTT topics** - The `eventTopic` parameter can contain one or more of following environment variables.
 
