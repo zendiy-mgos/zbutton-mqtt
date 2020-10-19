@@ -13,10 +13,10 @@ Mongoose-OS library for publishing [ZenButton](https://github.com/zendiy-mgos/zb
 **MQTT MESSAGE PAYLOAD PROPERTIES**
 |Property|Type||
 |--|--|--|
-|event|String|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"`.|
+|event|String|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"` (see [configuration properties](https://github.com/zendiy-mgos/zbutton-mqtt#mgos_zbutton_mqtt_cfg) below). |
 |isPressed|Boolean|It is `true` if the button is pressed (long-press). Otherwise it is `flase`.|
 |pressDuration|Integer|How long, in milliseconds, the button was pressed (long press).|
-|pressCounter|Integer|How many times the *long Press* event was repeated (see `press_repeat_ticks` ZenButton's [configuration parameter](https://github.com/zendiy-mgos/zbutton#mgos_zbutton_cfg)).|
+|pressCounter|Integer|How many times the *long Press* event was repeated (see `press_repeat_ticks` ZenButton's [configuration property](https://github.com/zendiy-mgos/zbutton#mgos_zbutton_cfg)).|
 ## GET STARTED
 Build up your own device in few minutes just starting from one of the following samples.
 ## Usage
@@ -107,7 +107,7 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |--|--|--|
 |eventClick|string|Optional. The `event` property value of the message payload to publish when the button is clicked. Default value `'SC'`.|
 |eventDblclick|string|Optional. The `event` property value of the message payload to publish when the button is double-clicked. Default value `'DC'`.|
-|eventPress|string|Optional. The `event` property value of the message payload to publish when the button is pressed. Default value `'PRRESS'`.|
+|eventPress|string|Optional. The `event` property value of the message payload to publish when the button is pressed. Default value `'LP'`.|
 |eventPressEnd|string|Optional. The `event` property value of the message payload to publish when the button is released after a long press. Default value `'LPE'`.|
 
 **Environment variables for MQTT topics** - The `eventTopic` parameter can contain one or more of following environment variables.
