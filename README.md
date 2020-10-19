@@ -1,12 +1,16 @@
 # ZenButton MQTT
 ## Overview
-Mongoose-OS library for publishing ZenButtons events as MQTT messages.
+Mongoose-OS library for publishing ZenButtons events as MQTT messages. A ZenButton instance publishes following MQTT messages on its topic according click or press events.
+
+**MQTT MESSAGES**
+|Event|Message payload|
+|--|--|
+|Single click|`{"event":"CLICK"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
+|Double click|`{"event":"DBLCLICK"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
+|Long press|`{"event":"PRESS"; "isPressed":true; "pressDuration":1010; "pressCounter":1}`|
+|Released (after long press)|`{"event":"PRESS_END"; "isPressed":false; "pressDuration":5550; "pressCounter":5}`|
 ## GET STARTED
 Build up your own device in few minutes just starting from one of the following samples.
-
-|Sample|Notes|
-|--|--|
-|[zbutton-mqtt-demo](https://github.com/zendiy-mgos/zbutton-mqtt-demo)|Mongoose-OS demo firmware that uses ZenButtons ecosystem for publishing pushbutton events as MQTT messages.|
 ## Usage
 Include the library into your `mos.yml` file.
 ```yaml
@@ -121,3 +125,5 @@ Take a look to some other samples or libraries.
 |Reference|Type||
 |--|--|--|
 |[zbutton-gpio](https://github.com/zendiy-mgos/zbutton-gpio)|Library|Mongoose-OS library for attaching ZenButtons to gpio-based pushbuttons.|
+|[zbutton-mqtt-demo](https://github.com/zendiy-mgos/zbutton-mqtt-demo)|Firmware|Mongoose-OS demo firmware that uses ZenButtons ecosystem for publishing pushbutton events as MQTT messages.|
+
