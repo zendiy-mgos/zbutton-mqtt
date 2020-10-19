@@ -24,6 +24,7 @@ void mg_zbutton_mqtt_cfg_close(struct mgos_zbutton_mqtt_cfg cfg) {
   free(((char *)cfg.event_click));
   free(((char *)cfg.event_dblclick));
   free(((char *)cfg.event_press));
+  free(((char *)cfg.event_press_end));
 }
 
 void mg_zbutton_mqtt_entry_free(struct mg_zbutton_mqtt_entry *entry) {
