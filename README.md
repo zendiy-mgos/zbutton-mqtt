@@ -24,15 +24,17 @@ struct mgos_zbutton_mqtt_cfg {
   const char *event_click;
   const char *event_dblclick;
   const char *event_press;
+  const char *event_press_end;
 };
 ```
 MQTT configuration settings for `mgos_zbutton_mqtt_attach()`.
 
 |Field||
 |--|--|
-|event_click|The event message payload to publish when the button is clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_CLICK` to use the default value ("CLICK")|
-|event_dblclick|The event message payload to publish when the button is double-clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_DBLCLICK` to use the default value ("DBLCLICK")|
-|event_press|The event message payload to publish when the button is pressed. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS` to use the default value ("PRESS")|
+|event_click|The event message payload to publish when the button is clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_CLICK` to use the default value `"CLICK"`|
+|event_dblclick|The event message payload to publish when the button is double-clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_DBLCLICK` to use the default value `"DBLCLICK"`|
+|event_press|The event message payload to publish when the button is pressed. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS` to use the default value `"PRESS"`|
+|event_press_end|The event message payload to publish when the button is released after a long press. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS_END` to use the default value `"PRESS_END"`|
 ### mgos_zbutton_mqtt_attach()
 ```c
 bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
@@ -86,14 +88,16 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 {
   eventClick: 'CLICK',
   eventDblclick: 'DBLCLICK',
-  eventPress: 'PRRESS'
+  eventPress: 'PRESS',
+  eventPressEnd: 'PRESS_END'
 }
 ```
 |Property|Type||
 |--|--|--|
-|eventClick|string|Optional. The event message payload to publish when the button is clicked. Default value 'CLICK'.|
-|eventDblclick|string|Optional. The event message payload to publish when the button is double-clicked. Default value 'DBLCLICK'.|
-|eventPress|string|Optional. The event message payload to publish when the button is pressed. Default value 'PRRESS'.|
+|eventClick|string|Optional. The event message payload to publish when the button is clicked. Default value `'CLICK'`.|
+|eventDblclick|string|Optional. The event message payload to publish when the button is double-clicked. Default value `'DBLCLICK'`.|
+|eventPress|string|Optional. The event message payload to publish when the button is pressed. Default value `'PRRESS'`.|
+|eventPressEnd|Optional. The event message payload to publish when the button is released after a long press. Default value `'PRESS_END'`|
 
 **Environment variables for MQTT topics** - The `eventTopic` parameter can contain one or more of following environment variables.
 
@@ -105,11 +109,7 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 **Example** - Create a button using default configuration values and attach it to MQTT services.
 ```js
 let btn = ZenButton.create('btn-1');
-let success = btn.MQTT.attach('$zt/${device_id}/${zthing_id}/event', {
-  eventClick: 'click',
-  eventDblclick: 'doubleclick',
-  eventPress: 'press'
-});
+let success = btn.MQTT.attach('$zt/${device_id}/${zthing_id}/event');
 ```
 ### .MQTT.detach()
 ```js
