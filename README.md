@@ -13,10 +13,10 @@ Mongoose-OS library for publishing [ZenButton](https://github.com/zendiy-mgos/zb
 **MQTT MESSAGE PAYLOAD PROPERTIES**
 |Property|Type||
 |--|--|--|
-|event|String|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"` (see [configuration properties](https://github.com/zendiy-mgos/zbutton-mqtt#mgos_zbutton_mqtt_cfg) below). |
-|isPressed|Boolean|It is `true` if the button is pressed (long-press). Otherwise it is `flase`.|
-|pressDuration|Integer|How long, in milliseconds, the button was pressed (long press).|
-|pressCounter|Integer|How many times the *long Press* event was repeated (see `press_repeat_ticks` ZenButton's [configuration property](https://github.com/zendiy-mgos/zbutton#mgos_zbutton_cfg)).|
+|event|string|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"` (see [configuration properties](https://github.com/zendiy-mgos/zbutton-mqtt#mgos_zbutton_mqtt_cfg) below). |
+|isPressed|bool|It is `true` if the button is pressed (long-press). Otherwise it is `flase`.|
+|pressDuration|int|How long, in milliseconds, the button was pressed (long press).|
+|pressCounter|int|How many times the *long Press* event was repeated (see `press_repeat_ticks` ZenButton's [configuration property](https://github.com/zendiy-mgos/zbutton#mgos_zbutton_cfg)).|
 ## GET STARTED
 Build up your own device in few minutes just starting from one of the following samples.
 ## Usage
@@ -37,6 +37,7 @@ struct mgos_zbutton_mqtt_cfg {
   const char *event_dblclick;
   const char *event_press;
   const char *event_press_end;
+  bool retain;
 };
 ```
 MQTT configuration settings for `mgos_zbutton_mqtt_attach()`.
@@ -47,6 +48,7 @@ MQTT configuration settings for `mgos_zbutton_mqtt_attach()`.
 |event_dblclick|The `event` property value of the message payload to publish when the button is double-clicked. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_DBLCLICK` to use the default value `"DC"`.|
 |event_press|The `event` property value of the message payload to publish when the button is pressed. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS` to use the default value `"LP"`.|
 |event_press_end|The `event` property value of the message payload to publish when the button is released after a long press. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS_END` to use the default value `"LPE"`.|
+|retain|The MQTT retain flag for pubishing messages. Default value `false`.|
 ### mgos_zbutton_mqtt_attach()
 ```c
 bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
@@ -101,6 +103,7 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
   eventDblclick // default value 'DC',
   eventPress    // default value 'LP',
   eventPressEnd // default value 'LPE'
+  retain        // default value false
 }
 ```
 |Property|Type||
@@ -109,6 +112,7 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |eventDblclick|string|Optional. The `event` property value of the message payload to publish when the button is double-clicked. Default value `'DC'`.|
 |eventPress|string|Optional. The `event` property value of the message payload to publish when the button is pressed. Default value `'LP'`.|
 |eventPressEnd|string|Optional. The `event` property value of the message payload to publish when the button is released after a long press. Default value `'LPE'`.|
+|retain|bool|The MQTT retain flag for pubishing messages. Default value `false`.|
 
 **Environment variables for MQTT topics** - The `eventTopic` parameter can contain one or more of following environment variables.
 

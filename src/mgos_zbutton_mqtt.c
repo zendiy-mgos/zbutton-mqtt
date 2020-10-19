@@ -76,7 +76,7 @@ void mg_zbutton_mqtt_on_event_cb(int ev, void *ev_data, void *ud) {
   }
 
   if (event) {
-    mgos_zthing_mqtt_pubf(entry->event_topic, false,
+    mgos_zthing_mqtt_pubf(entry->event_topic, entry->cfg.retain,
       "{event:%s; isPressed:%B; pressDuration:%d; pressCounter:%d}",
       event,
       mgos_zbutton_is_pressed(handle),
@@ -117,6 +117,7 @@ bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
       (cfg->event_press != NULL ? cfg->event_press : MGOS_ZBUTTON_MQTT_EV_PRESS)));
     e->cfg.event_press_end = strdup((cfg == NULL ? MGOS_ZBUTTON_MQTT_EV_PRESS_END :
       (cfg->event_press_end != NULL ? cfg->event_press_end : MGOS_ZBUTTON_MQTT_EV_PRESS_END)));
+    e->cfg.retain = (cfg == NULL ? false : cfg->retain);
 
     char *tmp_buf = NULL;
     // Normalize and clone event_topic 
@@ -127,8 +128,8 @@ bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
     } else {
       e->event_topic = strdup(event_topic);
     }
-    LOG(LL_INFO, ("Button '%s' will publish events on %s", e->handle->id,
-      e->event_topic));
+    LOG(LL_INFO, ("Button '%s' will publish events on %s (retain=%d)", e->handle->id,
+      e->event_topic, e->cfg.retain));
    
     if (mg_zbutton_mqtt_entry_set(e)) {
       SLIST_INSERT_HEAD(&s_context->entries, e, entry);
@@ -156,14 +157,16 @@ bool mgos_zbutton_mqtt_detach(struct mgos_zbutton *handle) {
 struct mgos_zbutton_mqtt_cfg *mjs_zbutton_mqtt_cfg_create(const char* event_click,
                                                           const char* event_dblclick,
                                                           const char* event_press,
-                                                          const char* event_press_end) {
+                                                          const char* event_press_end,
+                                                          bool retain) {
   struct mgos_zbutton_mqtt_cfg *cfg = calloc(1,
     sizeof(struct mgos_zbutton_mqtt_cfg));
   cfg->event_click = strdup(event_click != NULL ? event_click : MGOS_ZBUTTON_MQTT_EV_CLICK);
   cfg->event_dblclick = strdup(event_dblclick != NULL ? event_dblclick : MGOS_ZBUTTON_MQTT_EV_DBLCLICK);
   cfg->event_press = strdup(event_press != NULL ? event_press : MGOS_ZBUTTON_MQTT_EV_PRESS);
   cfg->event_press_end = strdup(event_press_end != NULL ? event_press_end : MGOS_ZBUTTON_MQTT_EV_PRESS_END);
-
+  cfg->retain = retain;
+  
   return cfg;
 }
 

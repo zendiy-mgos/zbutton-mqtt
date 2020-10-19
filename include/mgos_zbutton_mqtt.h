@@ -31,13 +31,14 @@ extern "C" {
 #define MGOS_ZBUTTON_MQTT_EV_PRESS "LP"
 #define MGOS_ZBUTTON_MQTT_EV_PRESS_END "LPE"
 
-#define MGOS_ZBUTTON_MQTT_CFG { NULL, NULL, NULL, NULL }
+#define MGOS_ZBUTTON_MQTT_CFG { NULL, NULL, NULL, NULL, false }
 
 struct mgos_zbutton_mqtt_cfg {
   const char *event_click;
   const char *event_dblclick;
   const char *event_press;
   const char *event_press_end;
+  bool retain;
 };
 
 bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
