@@ -9,6 +9,7 @@ Mongoose-OS library for publishing [ZenButton](https://github.com/zendiy-mgos/zb
 |Double Click|`{"event":"DC"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
 |Long Press|`{"event":"LP"; "isPressed":true; "pressDuration":1010; "pressCounter":1}`|
 |Long Press End|`{"event":"LPE"; "isPressed":false; "pressDuration":5550; "pressCounter":5}`|
+
 **MQTT MESSAGE PAYLOAD PROPERTIES**
 |Property|Type||
 |--|--|--|
