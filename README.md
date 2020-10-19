@@ -59,8 +59,7 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 **Example** - Create a button using default configuration values and attach it to MQTT services.
 ```c
 struct mgos_zbutton *btn = mgos_zbutton_create("btn-1", NULL);
-struct mgos_zbutton_mqtt_cfg cfg = {"click", "doubleclick", "press"};
-mgos_zbutton_mqtt_attach(btn, "$zt/${device_id}/${zthing_id}/event", &cfg);
+mgos_zbutton_mqtt_attach(btn, "$zt/${device_id}/${zthing_id}/event", NULL);
 ```
 ### mgos_zbutton_mqtt_detach()
 ```c
@@ -97,7 +96,7 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |eventClick|string|Optional. The event message payload to publish when the button is clicked. Default value `'CLICK'`.|
 |eventDblclick|string|Optional. The event message payload to publish when the button is double-clicked. Default value `'DBLCLICK'`.|
 |eventPress|string|Optional. The event message payload to publish when the button is pressed. Default value `'PRRESS'`.|
-|eventPressEnd|Optional. The event message payload to publish when the button is released after a long press. Default value `'PRESS_END'`|
+|eventPressEnd|string|Optional. The event message payload to publish when the button is released after a long press. Default value `'PRESS_END'`|
 
 **Environment variables for MQTT topics** - The `eventTopic` parameter can contain one or more of following environment variables.
 
