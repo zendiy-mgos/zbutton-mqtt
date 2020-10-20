@@ -61,7 +61,6 @@ void mg_zbutton_mqtt_on_event_cb(int ev, void *ev_data, void *ud) {
   struct mg_zbutton_mqtt_entry *entry = (struct mg_zbutton_mqtt_entry *)ud;
   if (!handle || !entry) return;
 
-  bool is_press_ev = false;
   const char* event = NULL;
   if (ev == MGOS_EV_ZBUTTON_ON_CLICK) {
     event = entry->cfg.event_click;
@@ -69,10 +68,8 @@ void mg_zbutton_mqtt_on_event_cb(int ev, void *ev_data, void *ud) {
     event = entry->cfg.event_dblclick;
   } else if (ev == MGOS_EV_ZBUTTON_ON_PRESS) {
     event = entry->cfg.event_press;
-    is_press_ev = true;
   } else if (ev == MGOS_EV_ZBUTTON_ON_PRESS_END) {
     event = entry->cfg.event_press_end;
-    is_press_ev = true;
   }
 
   if (event) {
@@ -80,8 +77,8 @@ void mg_zbutton_mqtt_on_event_cb(int ev, void *ev_data, void *ud) {
       "{event:%s; isPressed:%B; pressDuration:%d; pressCounter:%d}",
       event,
       mgos_zbutton_is_pressed(handle),
-      (is_press_ev ? mgos_zbutton_press_duration_get(handle) : 0),
-      (is_press_ev ? mgos_zbutton_press_counter_get(handle) : 0));
+      mgos_zbutton_press_duration_get(handle),
+      mgos_zbutton_press_counter_get(handle));
   }
 }
 
