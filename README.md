@@ -99,11 +99,11 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 **MQTT configuration properties**
 ```js
 {
-  eventClick    // default value 'SC',
-  eventDblclick // default value 'DC',
-  eventPress    // default value 'LP',
-  eventPressEnd // default value 'LPE'
-  retain        // default value false
+  eventClick: 'SC',     // default
+  eventDblclick: 'DC',  // default
+  eventPress: 'LP',     // default
+  eventPressEnd: 'LPE', // default
+  retain: true          // default
 }
 ```
 |Property|Type||
