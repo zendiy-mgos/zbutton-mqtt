@@ -14,20 +14,63 @@ Mongoose-OS library for publishing [ZenButton](https://github.com/zendiy-mgos/zb
 |Property|Type||
 |--|--|--|
 |event|string|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"` (see [configuration properties](https://github.com/zendiy-mgos/zbutton-mqtt#mgos_zbutton_mqtt_cfg) below). |
-|isPressed|bool|It is `true` if the button is pressed (long-press) or if the button was released after a long-press. Otherwise it is `flase`.|
+|isPressed|bool|It is `true` if the button is pressed (long-press) or if the button was released after a long-press. Otherwise it is `false`.|
 |pressDuration|int|How long, in milliseconds, the button was pressed (long press).|
 |pressCounter|int|How many times the *long Press* event was repeated (see `press_repeat_ticks` ZenButton's [configuration property](https://github.com/zendiy-mgos/zbutton#mgos_zbutton_cfg)).|
 ## GET STARTED
-Build up your own device in few minutes just starting from one of the following samples.
-## Usage
-Include the library into your `mos.yml` file.
+Build up your own device in few minutes just starting from the following sample.
+Include libraries into your `mos.yml` file.
 ```yaml
 libs:
+  - origin: https://github.com/zendiy-mgos/zbutton-gpio
   - origin: https://github.com/zendiy-mgos/zbutton-mqtt
 ```
-If you are developing a JavaScript firmware, load `api_zbutton_mqtt.js` in your `init.js` file.
+**C Code**
+```c
+#include "mgos.h"
+#include "mgos_zbutton_gpio.h"
+#include "mgos_zbutton_mqtt.h"
+
+enum mgos_app_init_result mgos_app_init(void) {
+  /* Create button using defualt configuration. */
+  struct mgos_zbutton_cfg cfg = MGOS_ZBUTTON_CFG;
+  struct mgos_zbutton *btn1 = mgos_zbutton_create("btn1", &cfg);
+  
+  if (btn1) {
+    /* Attach button to GPIO 14. */
+    struct mgos_zbutton_gpio_cfg gpio_cfg = MGOS_ZBUTTON_GPIO_CFG;  
+    if (mgos_zbutton_gpio_attach(btn1, 14, &gpio_cfg)) {
+      /* Attach button to the MQTT topic. */
+      if (mgos_zbutton_mqtt_attach(btn1, "zthings/${device_id}/${zthing_id}/event", NULL)) {
+        return MGOS_APP_INIT_SUCCESS;
+      }
+      mgos_zbutton_gpio_detach(btn1);
+    }
+    mgos_zbutton_close(btn1);
+  }
+  return MGOS_APP_INIT_ERROR;
+}
+```
+**JS Code**
 ```js
-load('api_zbutton_mqtt.js');
+load("api_zbutton_gpio.js")
+load("api_zbutton_mqtt.js")
+
+/* Create button using defualt configuration. */
+let btn1 = ZenButton.create('btn1');
+
+if (btn1) {
+  let success = false;
+  /* Attach button to GPIO 14. */
+  if (btn1.GPIO.attach(14)) {
+    /* Attach button to the MQTT topic. */
+    success = btn1.MQTT.attach('zthings/${device_id}/${zthing_id}/event'));
+  }
+  if (!success) {
+    btn1.GPIO.detach();
+    btn1.close();
+  }
+}
 ```
 ## C/C++ API Reference
 ### mgos_zbutton_mqtt_cfg
@@ -69,12 +112,6 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |--|--|
 |${device_id}|The device ID.|
 |${zthing_id}|The button ID.|
-
-**Example** - Create a button using default configuration values and attach it to MQTT services.
-```c
-struct mgos_zbutton *btn = mgos_zbutton_create("btn-1", NULL);
-mgos_zbutton_mqtt_attach(btn, "$zt/${device_id}/${zthing_id}/event", NULL);
-```
 ### mgos_zbutton_mqtt_detach()
 ```c
 bool mgos_zbutton_mqtt_detach(struct mgos_zbutton *handle);
@@ -120,13 +157,6 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |--|--|
 |${device_id}|The device ID.|
 |${zthing_id}|The button ID.|
-
-**Example** - Create a button using default configuration values and attach it to MQTT services.
-```js
-let btn = ZenButton.create('btn-1');
-let success = btn.MQTT.attach('$zt/${device_id}/${zthing_id}/event');
-```
-### .MQTT.detach()
 ```js
 let success = btn.MQTT.detach();
 ```
@@ -138,4 +168,3 @@ Take a look to some other samples or libraries.
 |--|--|--|
 |[zbutton-gpio](https://github.com/zendiy-mgos/zbutton-gpio)|Library|Mongoose-OS library for attaching ZenButtons to gpio-based pushbuttons.|
 |[zbutton-mqtt-demo](https://github.com/zendiy-mgos/zbutton-mqtt-demo)|Firmware|Mongoose-OS demo firmware that uses ZenButtons ecosystem for publishing pushbutton events as MQTT messages.|
-
