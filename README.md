@@ -1,22 +1,6 @@
 # ZenButton MQTT
 ## Overview
 Mongoose-OS library for publishing [ZenButton](https://github.com/zendiy-mgos/zbutton) events as MQTT messages. A [ZenButton](https://github.com/zendiy-mgos/zbutton) instance publishes following MQTT messages on its topic according click or press events.
-
-**MQTT MESSAGES**
-|Event|Message payload example|
-|--|--|
-|Single Click|`{"event":"SC"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
-|Double Click|`{"event":"DC"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
-|Long Press|`{"event":"LP"; "isPressed":true; "pressDuration":1010; "pressCounter":1}`|
-|Long Press End|`{"event":"LPE"; "isPressed":true; "pressDuration":5550; "pressCounter":5}`|
-
-**MQTT MESSAGE PAYLOAD PROPERTIES**
-|Property|Type||
-|--|--|--|
-|event|string|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"` (see [configuration properties](https://github.com/zendiy-mgos/zbutton-mqtt#mgos_zbutton_mqtt_cfg) below). |
-|isPressed|bool|It is `true` if the button is pressed (long-press) or if the button was released after a long-press. Otherwise it is `false`.|
-|pressDuration|int|How long, in milliseconds, the button was pressed (long press).|
-|pressCounter|int|How many times the *long Press* event was repeated (see `press_repeat_ticks` ZenButton's [configuration property](https://github.com/zendiy-mgos/zbutton#mgos_zbutton_cfg)).|
 ## GET STARTED
 Build up your own device in few minutes just starting from the following sample.
 Include libraries into your `mos.yml` file.
@@ -25,7 +9,7 @@ libs:
   - origin: https://github.com/zendiy-mgos/zbutton-gpio
   - origin: https://github.com/zendiy-mgos/zbutton-mqtt
 ```
-**C Code**
+**C/C++ sample code**
 ```c
 #include "mgos.h"
 #include "mgos_zbutton_gpio.h"
@@ -51,7 +35,8 @@ enum mgos_app_init_result mgos_app_init(void) {
   return MGOS_APP_INIT_ERROR;
 }
 ```
-**JS Code**
+**JavaScript sample code**
+
 ```js
 load("api_zbutton_gpio.js")
 load("api_zbutton_mqtt.js")
@@ -72,6 +57,21 @@ if (btn1) {
   }
 }
 ```
+## MQTT Messages
+|Event|Message payload example|
+|--|--|
+|Single Click|`{"event":"SC"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
+|Double Click|`{"event":"DC"; "isPressed":false; "pressDuration":0; "pressCounter":0}`|
+|Long Press|`{"event":"LP"; "isPressed":true; "pressDuration":1010; "pressCounter":1}`|
+|Long Press End|`{"event":"LPE"; "isPressed":true; "pressDuration":5550; "pressCounter":5}`|
+
+**PAYLOAD PROPERTIES**
+|Property|Type||
+|--|--|--|
+|event|string|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"` (see [configuration properties](https://github.com/zendiy-mgos/zbutton-mqtt#mgos_zbutton_mqtt_cfg) below). |
+|isPressed|bool|It is `true` if the button is pressed (long-press) or if the button was released after a long-press. Otherwise it is `false`.|
+|pressDuration|int|How long, in milliseconds, the button was pressed (long press).|
+|pressCounter|int|How many times the *long Press* event was repeated (see `press_repeat_ticks` ZenButton's [configuration property](https://github.com/zendiy-mgos/zbutton#mgos_zbutton_cfg)).|
 ## C/C++ API Reference
 ### mgos_zbutton_mqtt_cfg
 ```c
