@@ -103,15 +103,8 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |Parameter||
 |--|--|
 |handle|Button handle.|
-|event_topic|The MQTT topic for publishing button event payload.|
+|event_topic|The MQTT topic for publishing button event payload. The topic can contains [environment variables](https://github.com/zendiy-mgos/zthing-mqtt/blob/master/README.md#environment-variables).|
 |cfg|Optional. MQTT configuration. If `NULL`, default configuration values are used.|
-
-**Environment variables for MQTT topics** - The `event_topic` parameter can contain one or more of following environment variables.
-
-|Environment variable||
-|--|--|
-|${device_id}|The device ID.|
-|${zthing_id}|The button ID.|
 ### mgos_zbutton_mqtt_detach()
 ```c
 bool mgos_zbutton_mqtt_detach(struct mgos_zbutton *handle);
@@ -130,17 +123,17 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 
 |Parameter|Type||
 |--|--|--|
-|eventTopic|string|The MQTT topic for publishing button event payload.|
+|eventTopic|string|The MQTT topic for publishing button event payload. The topic can contains [environment variables](https://github.com/zendiy-mgos/zthing-mqtt/blob/master/README.md#environment-variables).|
 |cfg|object|Optional. MQTT configuration. If missing, default configuration values are used. For more details see *'MQTT configuration properties'* below.|
 
 **MQTT configuration properties**
 ```js
 {
-  eventClick: 'SC',     // default
-  eventDblclick: 'DC',  // default
-  eventPress: 'LP',     // default
-  eventPressEnd: 'LPE', // default
-  retain: true          // default
+  eventClick: 'SC',
+  eventDblclick: 'DC',
+  eventPress: 'LP',
+  eventPressEnd: 'LPE',
+  retain: true
 }
 ```
 |Property|Type||
@@ -150,13 +143,6 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |eventPress|string|Optional. The `event` property value of the message payload to publish when the button is pressed. Default value `'LP'`.|
 |eventPressEnd|string|Optional. The `event` property value of the message payload to publish when the button is released after a long press. Default value `'LPE'`.|
 |retain|bool|The MQTT retain flag for pubishing messages. Default value `false`.|
-
-**Environment variables for MQTT topics** - The `eventTopic` parameter can contain one or more of following environment variables.
-
-|Environment variable||
-|--|--|
-|${device_id}|The device ID.|
-|${zthing_id}|The button ID.|
 ```js
 let success = btn.MQTT.detach();
 ```
