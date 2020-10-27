@@ -104,7 +104,7 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |--|--|
 |handle|Button handle.|
 |event_topic|The MQTT topic for publishing button event payload. The topic can contains [environment variables](https://github.com/zendiy-mgos/zthing-mqtt/blob/master/README.md#environment-variables).|
-|cfg|Optional. MQTT configuration. If `NULL`, default configuration values are used.|
+|cfg|Optional. [MQTT configuration](https://github.com/zendiy-mgos/zbutton-mqtt#mgos_zbutton_mqtt_cfg). If `NULL`, default configuration values are used.|
 ### mgos_zbutton_mqtt_detach()
 ```c
 bool mgos_zbutton_mqtt_detach(struct mgos_zbutton *handle);
@@ -124,18 +124,9 @@ Attaches the button to MQTT services. Returns `true` on success, `false` otherwi
 |Parameter|Type||
 |--|--|--|
 |eventTopic|string|The MQTT topic for publishing button event payload. The topic can contains [environment variables](https://github.com/zendiy-mgos/zthing-mqtt/blob/master/README.md#environment-variables).|
-|cfg|object|Optional. MQTT configuration. If missing, default configuration values are used. For more details see *'MQTT configuration properties'* below.|
+|cfg|object|Optional. MQTT configuration. If missing, default configuration values are used. For more details see 'MQTT configuration properties' below.<br><br>{&nbsp;eventClick: 'SC',<br>&nbsp;&nbsp;eventDblclick: 'DC',<br>&nbsp;&nbsp;eventPress: 'LP',<br>&nbsp;&nbsp;eventPressEnd: 'LPE',<br>&nbsp;&nbsp;retain: true&nbsp;}|
 
 **MQTT configuration properties**
-```js
-{
-  eventClick: 'SC',
-  eventDblclick: 'DC',
-  eventPress: 'LP',
-  eventPressEnd: 'LPE',
-  retain: true
-}
-```
 |Property|Type||
 |--|--|--|
 |eventClick|string|Optional. The `event` property value of the message payload to publish when the button is clicked. Default value `'SC'`.|
