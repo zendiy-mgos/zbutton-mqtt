@@ -92,6 +92,12 @@ MQTT configuration settings for `mgos_zbutton_mqtt_attach()`.
 |event_press|The `event` property value of the message payload to publish when the button is pressed. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS` to use the default value `"LP"`.|
 |event_press_end|The `event` property value of the message payload to publish when the button is released after a long press. Set to `NULL` or to `MGOS_ZBUTTON_MQTT_EV_PRESS_END` to use the default value `"LPE"`.|
 |retain|The MQTT retain flag for pubishing messages. Default value `false`.|
+
+**Example** - Create and initialize configuration settings.
+```c
+// create and initialize cfg using defaults
+struct mgos_zbutton_mqtt_cfg cfg = MGOS_ZBUTTON_MQTT_CFG;
+```
 ### mgos_zbutton_mqtt_attach()
 ```c
 bool mgos_zbutton_mqtt_attach(struct mgos_zbutton *handle,
