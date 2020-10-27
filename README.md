@@ -65,7 +65,7 @@ if (btn1) {
 |Long Press|`{"event":"LP"; "isPressed":true; "pressDuration":1010; "pressCounter":1}`|
 |Long Press End|`{"event":"LPE"; "isPressed":true; "pressDuration":5550; "pressCounter":5}`|
 
-**PAYLOAD PROPERTIES**
+**Payload properties**
 |Property|Type||
 |--|--|--|
 |event|string|Event name. Default values are: `"SC"`, `"DC"`, `"LP"` and `"LPE"` (see [configuration properties](https://github.com/zendiy-mgos/zbutton-mqtt#mgos_zbutton_mqtt_cfg) below). |
