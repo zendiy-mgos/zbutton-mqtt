@@ -1,4 +1,5 @@
 #include "mgos.h"
+#include "mgos_event.h"
 #include "common/queue.h"
 #include "mgos_mqtt.h"
 #include "mgos_zthing_mqtt.h"
@@ -43,7 +44,7 @@ static void mg_zbutton_mqtt_on_event(struct mg_connection *nc,
   (void) nc;
   (void) user_data;
   if (ev == MG_EV_MQTT_CONNACK) {
-    // TODO: implement here
+    mgos_event_trigger(MGOS_EV_ZTHING_STATE_UPDATE, NULL);
   } else if (ev == MG_EV_MQTT_DISCONNECT) {
   }
 }
