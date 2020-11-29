@@ -44,7 +44,7 @@ static void mg_zbutton_mqtt_on_event(struct mg_connection *nc,
   (void) nc;
   (void) user_data;
   if (ev == MG_EV_MQTT_CONNACK) {
-    mgos_event_trigger(MGOS_EV_ZTHING_STATE_UPDATE, NULL);
+    // TODO: here
   } else if (ev == MG_EV_MQTT_DISCONNECT) {
   }
 }
