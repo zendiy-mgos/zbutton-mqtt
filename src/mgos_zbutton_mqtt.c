@@ -1,5 +1,4 @@
 #include "mgos.h"
-#include "mgos_event.h"
 #include "common/queue.h"
 #include "mgos_mqtt.h"
 #include "mgos_zthing_mqtt.h"
